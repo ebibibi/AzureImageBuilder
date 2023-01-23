@@ -12,7 +12,7 @@ Import-Module Az.Accounts
 $currentAzContext = Get-AzContext
 
 # destination image resource group
-$imageResourceGroup = "avdImage-Rg"
+$imageResourceGroup = "CustomImages-Rg"
 
 # location (see possible locations in main docs)
 $location = "japaneast"
