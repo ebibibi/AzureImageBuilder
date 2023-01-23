@@ -60,7 +60,12 @@ New-AzRoleDefinition -InputFile  ./aibRoleImageCreation.json
 #Start-Sleep -s 300
 do {
     Start-Sleep -s 10
+    Write-Host "debug1"
     $def = Get-AzRoleDefinition -Name $imageRoleDefName
+    Write-Host "debug2"
+    $def
+    Write-Host "debug3"
+    Write-Host ($null -eq $def)
 } while ($null -eq $def)
 
 # grant role definition to image builder service principal
