@@ -62,7 +62,7 @@ do {
     Start-Sleep -s 10
     Write-Host "Check if role definition exists..."
     $def = Get-AzRoleDefinition -Name $imageRoleDefName
-} while ($null -eq $def)
+} until ($def.Name -eq $imageRoleDefName)
 
 # grant role definition to image builder service principal
 New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
