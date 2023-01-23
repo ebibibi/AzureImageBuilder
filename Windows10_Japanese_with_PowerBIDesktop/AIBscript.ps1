@@ -57,7 +57,11 @@ Invoke-WebRequest -Uri $aibRoleImageCreationUrl -OutFile $aibRoleImageCreationPa
 New-AzRoleDefinition -InputFile  ./aibRoleImageCreation.json
 
 # wait for creation
-Start-Sleep -s 300
+#Start-Sleep -s 300
+do {
+    Start-Sleep -s 10
+    $def = Get-AzRoleDefinition -Name $imageRoleDefName
+} while ($null -eq $def)
 
 # grant role definition to image builder service principal
 New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
