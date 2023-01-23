@@ -74,7 +74,7 @@ $ConfidentialVMSupported = @{Name = 'SecurityType'; Value = 'TrustedLaunch' }
 $features = @($ConfidentialVMSupported)
 New-AzGalleryImageDefinition -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup -Location $location -Name $imageDefName -OsState generalized -OsType Windows -Publisher 'myCo' -Offer 'Windows' -Sku 'win10' -HyperVGeneration V2 -Feature $features
 
-$templateUrl = "https://raw.githubusercontent.com/ebibibi/azureimagebuilder/main/Win10_Japanese/localize.json"
+$templateUrl = "https://raw.githubusercontent.com/ebibibi/AzureImageBuilder/main/Windows10_Japanese/localize.json"
 $templateFilePath = "localize.json"
 
 Invoke-WebRequest -Uri $templateUrl -OutFile $templateFilePath -UseBasicParsing
