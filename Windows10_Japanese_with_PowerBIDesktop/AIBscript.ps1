@@ -101,4 +101,4 @@ New-AzResourceGroupDeployment -ResourceGroupName $imageResourceGroup -TemplateFi
 #$getStatus.ProvisioningErrorCode
 #$getStatus.ProvisioningErrorMessage
 
-#Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName -NoWait
+Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName -NoWait
