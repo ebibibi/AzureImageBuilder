@@ -21,7 +21,7 @@ $location = "japaneast"
 $subscriptionID = $currentAzContext.Subscription.Id
 
 # image template name
-$imageTemplateName = "win10_japanese"
+$imageTemplateName = "windows10_japanese"
 
 # distribution properties object name (runOutput), i.e. this gives you the properties of the managed image on completion
 $runOutputName = "sigOutput"
@@ -69,7 +69,7 @@ New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $ima
 
 # define azure compute gallery (shared image gallery)
 $sigGalleryName = "mycomputegallery"
-$imageDefName = "win10_japanese"
+$imageDefName = "windows10_japanese"
 
 # create gallery
 New-AzGallery -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup  -Location $location
@@ -101,4 +101,4 @@ New-AzResourceGroupDeployment -ResourceGroupName $imageResourceGroup -TemplateFi
 #$getStatus.ProvisioningErrorCode
 #$getStatus.ProvisioningErrorMessage
 
-#Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName -NoWait
+Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName -NoWait
