@@ -15,7 +15,8 @@ $currentAzContext = Get-AzContext
 $imageResourceGroup = "CustomImages-Rg"
 
 # location (see possible locations in main docs)
-$location = "japaneast"
+$location1 = "japaneast"
+$location2 = "japanwest"
 
 # your subscription, this will get your current subscription
 $subscriptionID = $currentAzContext.Subscription.Id
@@ -27,7 +28,7 @@ $imageTemplateName = "windows10_japanese"
 $runOutputName = "sigOutput"
 
 # create resource group
-New-AzResourceGroup -Name $imageResourceGroup -Location $location
+New-AzResourceGroup -Name $imageResourceGroup -Location $location1
 
 # setup role def names, these need to be unique
 $timeInt = $(get-date -UFormat "%s")
@@ -38,7 +39,7 @@ $identityName = "aibIdentity" + $timeInt
 'Az.ImageBuilder', 'Az.ManagedServiceIdentity' | ForEach-Object { Install-Module -Name $_ -AllowPrerelease }
 
 # create identity
-New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName -Location $location
+New-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName -Location $location1
 
 $identityNameResourceId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).Id
 $identityNamePrincipalId = $(Get-AzUserAssignedIdentity -ResourceGroupName $imageResourceGroup -Name $identityName).PrincipalId
@@ -72,12 +73,12 @@ $sigGalleryName = "mycomputegallery"
 $imageDefName = "windows10_japanese"
 
 # create gallery
-New-AzGallery -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup  -Location $location
+New-AzGallery -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup  -Location $location1
 
 # create gallery definition
 $ConfidentialVMSupported = @{Name = 'SecurityType'; Value = 'TrustedLaunch' }
 $features = @($ConfidentialVMSupported)
-New-AzGalleryImageDefinition -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup -Location $location -Name $imageDefName -OsState generalized -OsType Windows -Publisher 'myCo' -Offer 'Windows' -Sku 'win10' -HyperVGeneration V2 -Feature $features
+New-AzGalleryImageDefinition -GalleryName $sigGalleryName -ResourceGroupName $imageResourceGroup -Location $location1 -Name $imageDefName -OsState generalized -OsType Windows -Publisher 'myCo' -Offer 'Windows' -Sku 'win10' -HyperVGeneration V2 -Feature $features
 
 $templateUrl = "https://raw.githubusercontent.com/ebibibi/AzureImageBuilder/main/Windows10_Japanese_with_PowerBIDesktop/localize.json"
 $templateFilePath = "localize.json"
@@ -102,3 +103,11 @@ New-AzResourceGroupDeployment -ResourceGroupName $imageResourceGroup -TemplateFi
 #$getStatus.ProvisioningErrorMessage
 
 Start-AzImageBuilderTemplate -ResourceGroupName $imageResourceGroup -Name $imageTemplateName -NoWait
+
+$versionName = "1.0.0"
+$region1 = @{Name=$location1;ReplicaCount=1}
+$region2 = @{Name=$location2;ReplicaCount=1}
+$targetRegions = @($region1,$region2)
+
+$version = Get-AzGalleryImageVersion -ResourceGroupName $imageResourceGroup -GalleryName $sigGalleryName -GalleryImageDefinitionName $imageDefName
+Update-AzGalleryImageVersion -ResourceGroupName $imageResourceGroup -GalleryName $sigGalleryName -GalleryImageDefinitionName $imageDefName -Name $version.Name -ReplicaCount 1 -TargetRegion $targetRegions
