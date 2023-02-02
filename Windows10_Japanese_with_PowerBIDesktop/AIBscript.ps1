@@ -105,5 +105,7 @@ $region1 = @{Name=$location1;ReplicaCount=1}
 $region2 = @{Name=$location2;ReplicaCount=1}
 $targetRegions = @($region1,$region2)
 
-$version = Get-AzGalleryImageVersion -ResourceGroupName $imageResourceGroup -GalleryName $sigGalleryName -GalleryImageDefinitionName $imageDefName
+do {
+    $version = Get-AzGalleryImageVersion -ResourceGroupName $imageResourceGroup -GalleryName $sigGalleryName -GalleryImageDefinitionName $imageDefName
+} while ($null -eq $version.Name)
 Update-AzGalleryImageVersion -ResourceGroupName $imageResourceGroup -GalleryName $sigGalleryName -GalleryImageDefinitionName $imageDefName -Name $version.Name -ReplicaCount 1 -TargetRegion $targetRegions
