@@ -30,5 +30,5 @@ $sampleExcelFilePath = "C:\SampleData\Financial Sample.xlsx"
 Invoke-WebRequest -Uri $sampleExcelUrl -OutFile $sampleExcelFilePath
 
 $sampleExcelUrl = "https://artifactsforproducts.blob.core.windows.net/7988762673375/%E3%83%87%E3%83%A2%E3%83%87%E3%83%BC%E3%82%BF.xlsx?sp=r&st=2023-02-01T08:00:48Z&se=2099-02-01T16:00:48Z&spr=https&sv=2021-06-08&sr=b&sig=fzLvhD%2BHimMJUW7yHudf7X7z3GfbMw2lmSPniHO%2BMLY%3D"
-$sampleExcelFilePath = "C:\SampleData\サンプルデータ.xlsx"
+$sampleExcelFilePath = "C:\SampleData\Relation Sample.xlsx"
 Invoke-WebRequest -Uri $sampleExcelUrl -OutFile $sampleExcelFilePath
