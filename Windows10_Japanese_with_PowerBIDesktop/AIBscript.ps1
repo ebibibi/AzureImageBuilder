@@ -67,7 +67,9 @@ do {
 } while (($def.Name -eq $imageRoleDefName) -eq $false)
 
 # grant role definition to image builder service principal
-New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
+do {
+    New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
+} while ($! -eq $false)
 
 # define azure compute gallery (shared image gallery)
 $sigGalleryName = "mycomputegallery"
