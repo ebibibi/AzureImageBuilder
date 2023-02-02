@@ -67,9 +67,17 @@ do {
 } while (($def.Name -eq $imageRoleDefName) -eq $false)
 
 # grant role definition to image builder service principal
+$success = $false
 do {
     New-AzRoleAssignment -ObjectId $identityNamePrincipalId -RoleDefinitionName $imageRoleDefName -Scope "/subscriptions/$subscriptionID/resourceGroups/$imageResourceGroup"
-} while ($! -eq $false)
+    if($? -eq $true) {
+        $success = $true
+    }
+    else {
+        Write-Host "Failed to grant role definition to image builder service principal, retrying..."
+        Start-Sleep -s 10
+    }
+} while ($success -eq $false)
 
 # define azure compute gallery (shared image gallery)
 $sigGalleryName = "mycomputegallery"
